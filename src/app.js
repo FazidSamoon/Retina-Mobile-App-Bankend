@@ -13,7 +13,7 @@ const port = process.env.PORT || 3005;
 
 //MIDDLEWARE
 app.use(cors());
-app.use(Express.json({ limit: "10mb" }));
+app.use(Express.json({ limit: "500mb" }));
 app.use(Express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {

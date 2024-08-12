@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/fa858031-f1b0-4809-bd83-0eb56428e37a/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/retina-care-api",
+    "appService.deploySubpath": "."
+}

@@ -4,11 +4,12 @@ import dotenv from "dotenv";
 import cors from "cors";
 import router from "./routes/index.routes";
 import { errorHandlerMiddleware } from "./middleware/errorHandler";
+import fs from "graceful-fs";
 
 const app = Express();
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3005;
 
 //MIDDLEWARE
 app.use(cors());

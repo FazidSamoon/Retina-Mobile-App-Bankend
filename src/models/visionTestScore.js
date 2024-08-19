@@ -95,6 +95,10 @@ const visionTestStateSchema = new Mongoose.Schema({
       type: Number,
     },
   },
+  distance: {
+    type: String,
+    required: true,
+  },
 });
 
 const VisionTestStateModel = Mongoose.model(

@@ -7,8 +7,8 @@ import {
 
 const testResultsRouter = Express.Router();
 
+testResultsRouter.get("/:id", getAllTestScoreResultsByUser);
 testResultsRouter.post("/", saveVisionTestScore);
-testResultsRouter.get("/", getAllTestScoreResultsByUser);
-testResultsRouter.get("average-user/:id", getAverageTestScoreResultByUser);
+testResultsRouter.get("/average-user/:id", getAverageTestScoreResultByUser);
 
 export default testResultsRouter;

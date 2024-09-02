@@ -57,6 +57,9 @@ export const updateUsersLevel = async (userId, changeValue) => {
         level: updatedLevel,
         xpGained: updatedXpGained,
       },
+    },
+    {
+      new: true,
     }
   );
 

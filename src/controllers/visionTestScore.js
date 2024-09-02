@@ -42,3 +42,4 @@ export const getAverageTestScoreResultByUser = async (req, res) => {
     message: "Vison test scores retrived successfully",
   });
 }
+

@@ -99,6 +99,11 @@ const visionTestStateSchema = new Mongoose.Schema({
     type: String,
     required: true,
   },
+  testType: {
+    type: String,
+    required: true,
+    enum: ["LONG_DISTANCE", "NEAR_VISION", "COLOR_BLIND"],
+  },
 });
 
 const VisionTestStateModel = Mongoose.model(

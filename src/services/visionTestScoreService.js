@@ -218,8 +218,6 @@ export const getAllResults = async (userId, month, year) => {
     const userResponse = await userModel.findById(userId);
     if (!userResponse) return { status: 400, message: "User not found" };
 
-    if (!year) year = new Date().getFullYear();
-    if (!month) month = new Date().getMonth();
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 

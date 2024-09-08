@@ -40,6 +40,7 @@ export const getMonthlyChallangesForUser = async (req, res) => {
 };
 
 export const updateChallengeByUser = async (req, res) => {
+  console.log("hey ")
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const user = req.params.id;

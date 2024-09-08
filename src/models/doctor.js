@@ -50,6 +50,10 @@ const doctorSchema = new Mongoose.Schema(
       ref: "User",
       required: true,
     },
+    ratings: {
+      type: Number,
+      default: 0,
+    },
     channelingSchedule: {
       type: channelingScheduleSchema,
       required: false,

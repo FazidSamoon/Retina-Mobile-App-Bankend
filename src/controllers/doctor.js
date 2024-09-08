@@ -1,3 +1,5 @@
+import doctorModel from "../models/doctor";
+import doctorPatientSubscriptionModel from "../models/doctorPatientSubscription";
 import { authRegister } from "../services/authServices";
 import {
   createDoctor,
@@ -69,7 +71,7 @@ export const invitePatientsForSubscription = async (req, res) => {
     });
 
   if (!response)
-    return makeResponse({ res, status: 400, message: "Something went wrong" });
+    return makeResponse({ res, status: 400, message: "Something went wrong 2" });
   if (response.status) return makeResponse({ res, ...response });
   makeResponse({
     res,
@@ -117,4 +119,56 @@ export const removePatientsSubscription = async (req, res) => {
     data: response,
     message: "Subscriptions removed successfully",
   });
+};
+
+export const getAllDoctors = async (req, res) => {
+  try {
+    const response = await doctorModel.find();
+    if (!response)
+      return makeResponse({
+        res,
+        status: 500,
+        message: "Something went wrong",
+      });
+    makeResponse({
+      res,
+      status: 200,
+      data: response,
+      message: "Subscriptions removed successfully",
+    });
+  } catch (error) {
+    makeResponse({
+      res,
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
+};
+
+export const getMySubscribedDoctor = async (req, res) => {
+  try {
+    const response = await doctorPatientSubscriptionModel
+      .find({
+        user: req.params.id,
+      })
+      .populate("doctor");
+    if (!response)
+      return makeResponse({
+        res,
+        status: 500,
+        message: "Something went wrong",
+      });
+    makeResponse({
+      res,
+      status: 200,
+      data: response,
+      message: "Subscriptions removed successfully",
+    });
+  } catch (error) {
+    makeResponse({
+      res,
+      status: 400,
+      message: "Something went wrong",
+    });
+  }
 };

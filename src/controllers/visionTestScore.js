@@ -85,7 +85,6 @@ export const overollNearTestScoreStat = async (req, res) => {
   const { month, year, testType } = req.query;
 
   const response = await nearTestScoreStatService(user, month, year, testType);
-  console.log(response)
   if (!response)
     return makeResponse({ res, status: 400, message: "Something went wrong" });
   if (response.status) return makeResponse({ res, ...response });

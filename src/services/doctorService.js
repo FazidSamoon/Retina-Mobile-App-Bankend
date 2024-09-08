@@ -17,7 +17,7 @@ export const createDoctor = async (data, userId) => {
 
 export const subscriptionService = async (docId, data) => {
   try {
-    const doctor = await doctorModel.find({
+    const doctor = await doctorModel.findOne({
       user: docId,
     });
     if (!doctor) return { status: 400, message: "Doctor not found" };
@@ -25,11 +25,11 @@ export const subscriptionService = async (docId, data) => {
     const user = await userModel.findOne({
       email: data.email,
     });
-    console.log("user ", user);
+    console.log("user ", doctor._id);
     if (!user) return { status: 400, message: "User not found" };
 
     const subscription = await doctorPatientSubscriptionModel.create({
-      doctor: docId,
+      doctor: doctor._id,
       user: user._id,
       subscriptionType: data.subscriptionType,
       type: "FREE",
@@ -39,7 +39,8 @@ export const subscriptionService = async (docId, data) => {
     invitePatient(user.email);
     return subscription;
   } catch (error) {
-    return { status: 400, message: "Something went wrong" };
+    console.log(error)
+    return { status: 400, message: "Something went wrong 1" };
   }
 };
 
@@ -72,7 +73,7 @@ export const getAllPatients = async (docID) => {
 
     const subscriptions = await doctorPatientSubscriptionModel
       .find({
-        doctor: docID,
+        doctor: doctor._id,
       })
       .populate({
         path: "user",

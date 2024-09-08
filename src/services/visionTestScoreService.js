@@ -136,6 +136,7 @@ export const testScoreStatService = async (userId, month, year) => {
     ],
   };
 
+  console.log("res ", response)
   return response;
 };
 

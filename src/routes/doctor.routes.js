@@ -6,6 +6,6 @@ const doctorRouter = Express.Router();
 doctorRouter.get("/subscriptions/:id", getAllDocorsSubscriptions)
 doctorRouter.delete("/subscriptions/:id", removePatientsSubscription)
 doctorRouter.post("/register", registerDoctors);
-doctorRouter.post("/invite/:id", invitePatientsForSubscription)
+doctorRouter.post("/invite/:id", invitePatientsForSubscription) 
 
 export default doctorRouter;

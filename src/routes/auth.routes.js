@@ -1,9 +1,10 @@
 import Express from "express";
-import { createUser, findUserByEmail, forgotPassword, getAllEmployees, loginUser, registerUser, resetPassword, resetPasswordWithCode, updateUserInfo } from "../controllers/auth";
+import { createUser, findUserByEmail, findUserById, forgotPassword, getAllEmployees, loginUser, registerUser, resetPassword, resetPasswordWithCode, updateUserInfo } from "../controllers/auth";
 
 const authRouter = Express.Router();
 
 authRouter.get("/find/:email", findUserByEmail)
+authRouter.get("/find-by-id/:id", findUserById)
 authRouter.post("/login", loginUser);
 authRouter.post("/register", registerUser);
 authRouter.patch("/reset-password", resetPassword)

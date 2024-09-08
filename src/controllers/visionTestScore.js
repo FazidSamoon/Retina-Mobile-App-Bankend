@@ -80,7 +80,6 @@ export const overollTestScoreStat = async (req, res) => {
 };
 
 export const overollNearTestScoreStat = async (req, res) => {
-  console.log("hello")
   const user = req.params.id;
   const { month, year, testType } = req.query;
 

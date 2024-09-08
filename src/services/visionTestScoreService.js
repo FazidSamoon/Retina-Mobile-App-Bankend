@@ -101,6 +101,7 @@ export const testScoreStatService = async (userId, month, year ) => {
       $gte: startDate,
       $lt: endDate,
     },
+    testType: "LONG_DISTANCE"
   });
 
   const labels = [];

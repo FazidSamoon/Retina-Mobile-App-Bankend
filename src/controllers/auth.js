@@ -171,3 +171,32 @@ export const resetPasswordWithCode = async (req, res) => {
     message: "Password has been reset successfully",
   });
 };
+
+export const findUserByEmail = async (req, res) => {
+  console.log("hey")
+  try {
+
+    const { email } = req.params; // Assuming the email is passed as a URL parameter
+    console.log(email)
+    const user = await userModel.findOne({ email });
+
+    if (!user) {
+      return makeResponse({ res, status: 404, message: "User not found" });
+    }
+
+    const { password, ...otherDetails } = user._doc;
+    return makeResponse({
+      res,
+      status: 200,
+      data: otherDetails,
+      message: "User found successfully",
+    });
+  } catch (error) {
+    console.error("Error finding user by email:", error);
+    return makeResponse({
+      res,
+      status: 500,
+      message: "Internal server error",
+    });
+  }
+};

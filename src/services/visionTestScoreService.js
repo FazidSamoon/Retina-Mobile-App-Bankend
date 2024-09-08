@@ -84,7 +84,7 @@ export const getMostNearRecentFiveRecords = async (userId) => {
   }
 };
 
-export const testScoreStatService = async (userId, month, year ) => {
+export const testScoreStatService = async (userId, month, year) => {
   if (!userId || userId === undefined) {
     return { status: 400, message: "User not found" };
   }
@@ -100,8 +100,7 @@ export const testScoreStatService = async (userId, month, year ) => {
     date: {
       $gte: startDate,
       $lt: endDate,
-    },
-    testType: "LONG_DISTANCE"
+    }
   });
 
   const labels = [];
@@ -150,9 +149,13 @@ const generateRandomColor = () => {
   return rgb;
 };
 
-
 //remove later
-export const nearTestScoreStatService = async (userId, month, year, testType = "NEAR_VISION" ) => {
+export const nearTestScoreStatService = async (
+  userId,
+  month,
+  year,
+  testType = "NEAR_VISION"
+) => {
   if (!userId) {
     return { status: 400, message: "User not found" };
   }
@@ -168,7 +171,7 @@ export const nearTestScoreStatService = async (userId, month, year, testType = "
       $gte: startDate,
       $lt: endDate,
     },
-    testType
+    testType,
   });
 
   const labels = [];
@@ -205,4 +208,31 @@ export const nearTestScoreStatService = async (userId, month, year, testType = "
   };
 
   return response;
+};
+
+export const getAllResults = async (userId, month, year) => {
+  try {
+    if (!userId) {
+      return { status: 400, message: "User not found" };
+    }
+    const userResponse = await userModel.findById(userId);
+    if (!userResponse) return { status: 400, message: "User not found" };
+
+    if (!year) year = new Date().getFullYear();
+    if (!month) month = new Date().getMonth();
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0, 23, 59, 59, 999);
+
+    const results = await VisionTestStateModel.find({
+      user: userId,
+      date: {
+        $gte: startDate,
+        $lt: endDate,
+      },
+    });
+
+    return results;
+  } catch (error) {
+    console.log(error);
+  }
 };

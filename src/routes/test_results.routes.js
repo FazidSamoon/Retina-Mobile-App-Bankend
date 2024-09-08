@@ -1,5 +1,6 @@
 import Express from "express";
 import {
+  allTestRusultsByUser,
   getAllTestScoreResultsByUser,
   getAverageNearTestScoreResultByUser,
   getAverageTestScoreResultByUser,
@@ -11,6 +12,7 @@ import {
 const testResultsRouter = Express.Router();
 
 testResultsRouter.get("/:id", getAllTestScoreResultsByUser);
+testResultsRouter.get("/all-results/:id", allTestRusultsByUser);
 testResultsRouter.post("/", saveVisionTestScore);
 testResultsRouter.get("/average-user/:id", getAverageTestScoreResultByUser);
 testResultsRouter.get("/average-user-near/:id", getAverageNearTestScoreResultByUser);

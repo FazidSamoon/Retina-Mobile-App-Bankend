@@ -1,5 +1,6 @@
 import {
   addNewVisionTestScoreService,
+  getAllResults,
   getAllVisionTestScoresByUserService,
   getMostRecentFiveRecords,
   nearTestScoreStatService,
@@ -95,3 +96,19 @@ export const overollNearTestScoreStat = async (req, res) => {
     message: "Vison test overoll scores stat retrived successfully",
   });
 };
+
+export const allTestRusultsByUser = async (req, res) => {
+  const user = req.params.id;
+  const { month, year } = req.query;
+
+  const response = await getAllResults(user, month, year);
+  if (!response)
+    return makeResponse({ res, status: 400, message: "Something went wrong" });
+  if (response.status) return makeResponse({ res, ...response });
+  makeResponse({
+    res,
+    status: 200,
+    data: response,
+    message: "Vison test overoll scores stat retrived successfully",
+  });
+}

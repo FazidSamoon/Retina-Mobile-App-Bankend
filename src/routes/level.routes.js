@@ -1,8 +1,9 @@
 import Express from "express";
-import { getUsersCurrentXpAndLevel, updateUserLevelDetails } from "../controllers/level";
+import { getLeaderboardData, getUsersCurrentXpAndLevel, updateUserLevelDetails } from "../controllers/level";
 
 const levelRouter = Express.Router();
 
+levelRouter.get("/leaderboard/:id", getLeaderboardData)
 levelRouter.get("/user/:id", getUsersCurrentXpAndLevel)
 levelRouter.patch("/user/:id", updateUserLevelDetails)
 

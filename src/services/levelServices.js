@@ -2,6 +2,7 @@ import levelModel from "../models/level";
 import userModel from "../models/user";
 
 export const usersCurrentLevelDetails = async (userId) => {
+  console.log("hey");
   const user = await userModel.findById(userId);
   if (!user) return { status: 400, message: "User not found" };
 
@@ -64,4 +65,25 @@ export const updateUsersLevel = async (userId, changeValue) => {
   );
 
   return updatedResult;
+};
+
+export const getLeaderboard = async (currentUserId) => {
+  try {
+    const leaderboard = await levelModel
+      .find({})
+      .populate("user", "name") // Adjust the fields you want to retrieve from the User model
+      .sort({ level: -1, xpGained: -1 }) // Sort by level first, then xpGained
+      .exec();
+
+    // Iterate through the leaderboard and set 'me' field
+    const leaderboardWithMeFlag = leaderboard.map((entry) => ({
+      ...entry._doc,
+      me: entry.user._id.toString() === currentUserId.toString(),
+    }));
+
+    return leaderboardWithMeFlag;
+  } catch (error) {
+    console.error("Error retrieving leaderboard data:", error);
+    throw error;
+  }
 };

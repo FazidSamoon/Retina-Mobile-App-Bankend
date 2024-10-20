@@ -9,10 +9,12 @@ import { makeResponse } from "../utils/response";
 export const checkChallengesAvailabilityByUser = async (req, res) => {
   const currentYear = new Date().getFullYear();
   const user = req.params.id;
+  console.log("1", user);
   const response = await checkChallangeAvailabilityByUserService(
     currentYear,
     user
   );
+
   if (!response)
     return makeResponse({ res, status: 400, message: "Something went wrong" });
   if (response.status) return makeResponse({ res, ...response });
@@ -27,7 +29,9 @@ export const checkChallengesAvailabilityByUser = async (req, res) => {
 export const getMonthlyChallangesForUser = async (req, res) => {
   const currentMonth = new Date().getMonth();
   const user = req.params.id;
+
   const response = await getMonthlyChallanges(user, getMonthName(currentMonth));
+  console.log("userss", response);
   if (!response)
     return makeResponse({ res, status: 400, message: "Something went wrong" });
   if (response.status) return makeResponse({ res, ...response });
@@ -40,7 +44,6 @@ export const getMonthlyChallangesForUser = async (req, res) => {
 };
 
 export const updateChallengeByUser = async (req, res) => {
-  console.log("hey ")
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const user = req.params.id;

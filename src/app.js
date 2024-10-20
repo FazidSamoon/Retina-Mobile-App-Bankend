@@ -6,7 +6,7 @@ import router from "./routes/index.routes";
 import { errorHandlerMiddleware } from "./middleware/errorHandler";
 import fs from "graceful-fs";
 
-const app = Express();
+const app = Express(); 
 dotenv.config();
 
 const port = process.env.PORT || 3005;

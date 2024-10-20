@@ -12,7 +12,6 @@ export const checkChallangeAvailabilityByUserService = async (year, userId) => {
     user: userId,
   });
 
-  console.log(challange);
   if (!challange) {
     const challangeBody = {
       challenges: challenges,
@@ -25,6 +24,7 @@ export const checkChallangeAvailabilityByUserService = async (year, userId) => {
 };
 
 export const getMonthlyChallanges = async (userId, month) => {
+  console.log(month.toUpperCase()) 
   const userResponse = userModel.findById(userId);
 
   if (!userResponse) return { status: 400, message: "User not found" };
@@ -33,6 +33,8 @@ export const getMonthlyChallanges = async (userId, month) => {
     user: userId,
     year: new Date().getFullYear(),
   });
+
+  console.log("userChallenges ", userChallenges)
   if (userChallenges) {
     const monthTasks = userChallenges.challenges[month.toUpperCase()];
     return monthTasks || [];

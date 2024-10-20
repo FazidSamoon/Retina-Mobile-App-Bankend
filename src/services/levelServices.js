@@ -1,4 +1,5 @@
 import levelModel from "../models/level";
+import RewardsModel from "../models/rewards";
 import userModel from "../models/user";
 
 export const usersCurrentLevelDetails = async (userId) => {
@@ -57,6 +58,21 @@ export const updateUsersLevel = async (userId, changeValue) => {
       $set: {
         level: updatedLevel,
         xpGained: updatedXpGained,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  await RewardsModel.findOneAndUpdate(
+    {
+      user: userId,
+      year: currentYear,
+    },
+    {
+      $inc: {
+        points: changeValue,
       },
     },
     {

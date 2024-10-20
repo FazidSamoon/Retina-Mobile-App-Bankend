@@ -11,7 +11,7 @@ const channelingRoute = Express.Router();
 
 channelingRoute.post("/availability", checkChannelingAvailability);
 channelingRoute.post("/", addChannelingSlot);
-channelingRoute.post("/:id", updateChannelingSlot);
+channelingRoute.patch("/:id", updateChannelingSlot);
 
 channelingRoute.get("/doctor/:id", getAllChannelingsByDoctor);
 channelingRoute.get("/patient/:id", getAllChannelingsByPatient);

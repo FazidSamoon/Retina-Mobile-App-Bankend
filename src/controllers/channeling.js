@@ -179,11 +179,11 @@ export const addChannelingSlot = async (req, res) => {
 };
 
 export const updateChannelingSlot = async (req, res) => {
-  const { channelingId } = req.params;
+  const { id } = req.params;
   const { date, startTime, endTime, status } = req.body;
 
   try {
-    const channeling = await channelingModel.findById(channelingId);
+    const channeling = await channelingModel.findById(id);
 
     if (!channeling) {
       return res.status(404).json({ message: "Channeling not found" });

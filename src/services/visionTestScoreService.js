@@ -1,3 +1,4 @@
+import { sendFirebasePushNotifications } from "../firebase/initializeFirebase";
 import doctorPatientSubscriptionModel from "../models/doctorPatientSubscription";
 import userModel from "../models/user";
 import VisionTestStateModel from "../models/visionTestScore";
@@ -19,7 +20,13 @@ export const addNewVisionTestScoreService = async (scoreObj, user) => {
     .find({
       user: user,
     })
-    .populate("doctor");
+    .populate({
+      path: "doctor",
+      populate: {
+        path: "user",
+        model: "User",
+      },
+    });
 
   if (subscription && subscription.length > 0) {
     const emailTemplate = `
@@ -27,6 +34,18 @@ export const addNewVisionTestScoreService = async (scoreObj, user) => {
   <p>Your patient has performed a vision test at ${new Date()} and patient needs your attention</p>
   <p>Please chcek your application for more info</p>
 `;
+
+    console.log(
+      "subscription[0].doctor.user.fcmToken ",
+      subscription[0]?.doctor?.user?.fcmToken
+    );
+    sendFirebasePushNotifications(
+      `Your Patient ${userResponse.name} has performed a vision test`,
+      `Your patient ${
+        userResponse.name
+      } has performed a vision test at ${new Date()} and patient needs your attention`,
+      subscription[0]?.doctor?.user?.fcmToken
+    );
 
     sendEmail(
       subscription[0].doctor.email,

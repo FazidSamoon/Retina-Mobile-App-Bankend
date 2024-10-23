@@ -5,6 +5,8 @@ import cors from "cors";
 import router from "./routes/index.routes";
 import { errorHandlerMiddleware } from "./middleware/errorHandler";
 import fs from "graceful-fs";
+import admin from "firebase-admin"
+import { initializeFirebase } from "./firebase/initializeFirebase";
 
 const app = Express(); 
 dotenv.config();
@@ -26,6 +28,7 @@ app.use(errorHandlerMiddleware);
 
 try {
   connectDB();
+  initializeFirebase()
   app.listen(port, () => {
     console.log("Server running on port ", port);
   });

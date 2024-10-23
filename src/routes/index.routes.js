@@ -9,6 +9,7 @@ import channelingRoute from "./channeling.routes";
 import crypto from "crypto";
 import userModel from "../models/user";
 import { makeResponse } from "../utils/response";
+import { sendFirebasePushNotifications } from "../firebase/initializeFirebase";
 
 const { google } = require("googleapis");
 
@@ -27,46 +28,66 @@ router.use("/level", levelRouter);
 router.use("/reward", rewardRouter);
 router.use("/doctor", doctorRouter);
 router.use("/channeling", channelingRoute);
-router.use("/patients", async(req, res) => {
-  const response = await userModel.find()
-  console.log("response ", response)
-  res.json(response)
-})
+router.use("/patients", async (req, res) => {
+  const response = await userModel.find();
+  console.log("response ", response);
+  res.json(response);
+});
 
-router.get('/calendar/auth', (req, res) => {
+router.post("/save-fcm/:id", async (req, res) => {
+  const id = req.params.id;
+  const { fcmToken } = req.body;
 
-  console.log("hey")
+  const response = await userModel.findByIdAndUpdate(id, {
+    fcmToken: fcmToken,
+  });
+  res.json(response);
+});
+
+router.get("/send-message/:id", async (req, res) => {
+  const id = req.params.id;
+  const response = await userModel.findById(id);
+
+  sendFirebasePushNotifications(
+    "test user notificaiton",
+    "test user notificaiton",
+    response.fcmToken
+  );
+  res.json(response);
+});
+
+router.get("/calendar/auth", (req, res) => {
+  console.log("hey");
   const scopes = [
-    'https://www.googleapis.com/auth/calendar', // Scopes for calendar/meet access
-    'https://www.googleapis.com/auth/calendar.events',
+    "https://www.googleapis.com/auth/calendar", // Scopes for calendar/meet access
+    "https://www.googleapis.com/auth/calendar.events",
   ];
 
   const url = oAuth2Client.generateAuthUrl({
-    access_type: 'offline', // Important for getting a refresh token
+    access_type: "offline", // Important for getting a refresh token
     scope: scopes,
   });
 
-  console.log(url)
+  console.log(url);
 
   res.send(url);
 });
 
-router.get('/oauth2callback', async (req, res) => {
-  console.log("fagafa")
-  const code = "4/0AVG7fiQ4qufNduxvZ369-EsYPbmNNDEQd1TVodWwx4LiZ9yvakaCg9bI8G2MbzHmzTp4Bg";
+router.get("/oauth2callback", async (req, res) => {
+  console.log("fagafa");
+  const code =
+    "4/0AVG7fiQ4qufNduxvZ369-EsYPbmNNDEQd1TVodWwx4LiZ9yvakaCg9bI8G2MbzHmzTp4Bg";
 
   try {
-
     const { tokens } = await oAuth2Client.getToken(code);
-    
-    console.log('Tokens received:', tokens);
 
-    res.send('Authentication successful! You can close this window.');
+    console.log("Tokens received:", tokens);
+
+    res.send("Authentication successful! You can close this window.");
   } catch (error) {
-    console.error('Error getting tokens:', error);
-    res.status(500).send('Error retrieving tokens');
+    console.error("Error getting tokens:", error);
+    res.status(500).send("Error retrieving tokens");
   }
 });
-
 
 export default router;

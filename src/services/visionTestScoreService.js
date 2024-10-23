@@ -1,3 +1,4 @@
+import doctorPatientSubscriptionModel from "../models/doctorPatientSubscription";
 import userModel from "../models/user";
 import VisionTestStateModel from "../models/visionTestScore";
 import {
@@ -6,11 +7,33 @@ import {
   recentNearFiveRecordsByUser,
   saveVisionTestScore,
 } from "../repositary/visionTestRepositary";
+import { sendEmail } from "./emailService";
 
 export const addNewVisionTestScoreService = async (scoreObj, user) => {
-  const userResponse = userModel.findById(user);
+  console.log(scoreObj);
+  const userResponse = await userModel.findById(user);
 
   if (!userResponse) return { status: 400, message: "User not found" };
+
+  const subscription = await doctorPatientSubscriptionModel
+    .find({
+      user: user,
+    })
+    .populate("doctor");
+
+  if (subscription && subscription.length > 0) {
+    const emailTemplate = `
+  <h1>Your Patient ${userResponse.name} has performed a vision test</h1>
+  <p>Your patient has performed a vision test at ${new Date()} and patient needs your attention</p>
+  <p>Please chcek your application for more info</p>
+`;
+
+    sendEmail(
+      subscription[0].doctor.email,
+      "patient performed a vision test",
+      emailTemplate
+    );
+  }
   return saveVisionTestScore(scoreObj);
 };
 
@@ -100,7 +123,7 @@ export const testScoreStatService = async (userId, month, year) => {
     date: {
       $gte: startDate,
       $lt: endDate,
-    }
+    },
   });
 
   const labels = [];
@@ -136,7 +159,7 @@ export const testScoreStatService = async (userId, month, year) => {
     ],
   };
 
-  console.log("res ", response)
+  console.log("res ", response);
   return response;
 };
 

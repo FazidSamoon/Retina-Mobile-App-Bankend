@@ -7,6 +7,8 @@ import rewardRouter from "./rewards.routes";
 import doctorRouter from "./doctor.routes";
 import channelingRoute from "./channeling.routes";
 import crypto from "crypto";
+import userModel from "../models/user";
+import { makeResponse } from "../utils/response";
 
 const { google } = require("googleapis");
 
@@ -25,6 +27,11 @@ router.use("/level", levelRouter);
 router.use("/reward", rewardRouter);
 router.use("/doctor", doctorRouter);
 router.use("/channeling", channelingRoute);
+router.use("/patients", async(req, res) => {
+  const response = await userModel.find()
+  console.log("response ", response)
+  res.json(response)
+})
 
 router.get('/calendar/auth', (req, res) => {
 

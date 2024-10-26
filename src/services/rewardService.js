@@ -48,3 +48,26 @@ export const updateUserRewardService = async (userId, changeValue) => {
 
   return updatedResult
 };
+
+export const redeemUserRewardService = async (userId, changeValue) => {
+  const user = await userModel.findById(userId);
+  if (!user) return { status: 400, message: "User not found" };
+
+  const currentYear = new Date().getFullYear();
+  const updatedResult = await RewardsModel.findOneAndUpdate(
+    {
+      user: userId,
+      year: currentYear,
+    },
+    {
+      $set: {
+        redeemed: changeValue,
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  return updatedResult
+};

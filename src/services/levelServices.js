@@ -65,20 +65,38 @@ export const updateUsersLevel = async (userId, changeValue) => {
     }
   );
 
-  await RewardsModel.findOneAndUpdate(
-    {
+
+  const reward = await RewardsModel.find({
+    user: userId,
+    year: currentYear,
+  })
+
+  if (reward && reward.length > 0) {
+    await RewardsModel.findOneAndUpdate(
+      {
+        user: userId,
+        year: currentYear,
+      },
+      {
+        $inc: {
+          points: changeValue,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+  } else {
+    const rew = new RewardsModel({
       user: userId,
       year: currentYear,
-    },
-    {
-      $inc: {
-        points: changeValue,
-      },
-    },
-    {
-      new: true,
-    }
-  );
+      expires_on: new Date(currentYear, 11, 31),
+      points: changeValue,
+      redeemed: 0
+    })
+
+    rew.save()
+  }
 
   return updatedResult;
 };
@@ -87,11 +105,10 @@ export const getLeaderboard = async (currentUserId) => {
   try {
     const leaderboard = await levelModel
       .find({})
-      .populate("user", "name") // Adjust the fields you want to retrieve from the User model
-      .sort({ level: -1, xpGained: -1 }) // Sort by level first, then xpGained
+      .populate("user", "name")
+      .sort({ level: -1, xpGained: -1 })
       .exec();
 
-    // Iterate through the leaderboard and set 'me' field
     const leaderboardWithMeFlag = leaderboard.map((entry) => ({
       ...entry._doc,
       me: entry.user._id.toString() === currentUserId.toString(),

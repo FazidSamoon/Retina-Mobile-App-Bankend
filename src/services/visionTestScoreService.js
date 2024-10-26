@@ -1,5 +1,6 @@
 import { sendFirebasePushNotifications } from "../firebase/initializeFirebase";
 import doctorPatientSubscriptionModel from "../models/doctorPatientSubscription";
+import notificationModel from "../models/notifications";
 import userModel from "../models/user";
 import VisionTestStateModel from "../models/visionTestScore";
 import {
@@ -35,10 +36,13 @@ export const addNewVisionTestScoreService = async (scoreObj, user) => {
   <p>Please chcek your application for more info</p>
 `;
 
-    console.log(
-      "subscription[0].doctor.user.fcmToken ",
-      subscription[0]?.doctor?.user?.fcmToken
-    );
+    const notification = new notificationModel({
+      userId: subscription[0]?.doctor?.user?._id,
+      message: `Your patient ${
+        userResponse.name
+      } has performed a vision test at ${new Date()} and patient needs your attention`,
+    });
+    notification.save()
     sendFirebasePushNotifications(
       `Your Patient ${userResponse.name} has performed a vision test`,
       `Your patient ${
@@ -143,6 +147,7 @@ export const testScoreStatService = async (userId, month, year) => {
       $gte: startDate,
       $lt: endDate,
     },
+    testType: "LONG_DISTANCE"
   });
 
   const labels = [];

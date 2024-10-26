@@ -1,5 +1,6 @@
 import channelingModel from "../models/channelings";
 import doctorModel from "../models/doctor";
+import notificationModel from "../models/notifications";
 import userModel from "../models/user";
 import {
   getChannelingsByDoctor,
@@ -130,7 +131,7 @@ export const addChannelingSlot = async (req, res) => {
       });
     }
 
-    const doctor = await doctorModel.findById(doctorId);
+    const doctor = await doctorModel.findById(doctorId).populate("user");
     const user = await userModel.findById(userId);
 
     const startDateTime = new Date(`${date}T${startTime}:00`);
@@ -166,6 +167,13 @@ export const addChannelingSlot = async (req, res) => {
     });
 
     await newChanneling.save();
+
+    const notification = new notificationModel({
+      userId: doctor.user._id,
+      message: `Channeling requested by ${user.name} on ${startDateTime} - ${endDateTime}`,
+    });
+
+    await notification.save();
     return makeResponse({
       res,
       status: 200,
@@ -183,7 +191,7 @@ export const updateChannelingSlot = async (req, res) => {
   const { date, startTime, endTime, status } = req.body;
 
   try {
-    const channeling = await channelingModel.findById(id);
+    const channeling = await channelingModel.findById(id).populate("user");
 
     if (!channeling) {
       return res.status(404).json({ message: "Channeling not found" });
@@ -218,6 +226,12 @@ export const updateChannelingSlot = async (req, res) => {
       channeling.status = status;
     }
 
+    const notification = new notificationModel({
+      userId: channeling.user._id,
+      message: `Channeling request status updated from ${channeling.status} to ${status}`,
+    });
+
+    await notification.save();
     await channeling.save();
 
     return res

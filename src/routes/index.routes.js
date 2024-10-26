@@ -10,6 +10,7 @@ import crypto from "crypto";
 import userModel from "../models/user";
 import { makeResponse } from "../utils/response";
 import { sendFirebasePushNotifications } from "../firebase/initializeFirebase";
+import notificationRouter from "./notification.routes";
 
 const { google } = require("googleapis");
 
@@ -27,6 +28,7 @@ router.use("/challanges", challengesRouter);
 router.use("/level", levelRouter);
 router.use("/reward", rewardRouter);
 router.use("/doctor", doctorRouter);
+router.use("/notificaiton", notificationRouter)
 router.use("/channeling", channelingRoute);
 router.use("/patients", async (req, res) => {
   const response = await userModel.find();

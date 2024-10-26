@@ -35,6 +35,11 @@ const channelingSchema = new Mongoose.Schema({
     enum: ["IN-HOUSE", "VIDEOCONFERENCE"],
     required: true,
   },
+  payment: {
+    type: String,
+    enum: ["FREE", "VISA", "POINTS"],
+    default: "FREE",
+  },
   status: {
     type: String,
     enum: ["SCHEDULED", "COMPLETED", "CANCELLED", "PENDING"],

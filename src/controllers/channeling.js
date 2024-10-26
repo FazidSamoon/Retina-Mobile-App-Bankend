@@ -110,7 +110,7 @@ export const checkChannelingAvailability = async (req, res) => {
 };
 
 export const addChannelingSlot = async (req, res) => {
-  const { doctorId, date, startTime, endTime, userId, type } = req.body;
+  const { doctorId, date, startTime, endTime, userId, type, payment } = req.body;
 
   try {
     const existingChannelings = await channelingModel.find({
@@ -164,6 +164,7 @@ export const addChannelingSlot = async (req, res) => {
       type: type,
       status: "PENDING",
       meetLink: link,
+      payment: payment ?? "FREE"
     });
 
     await newChanneling.save();

@@ -60,7 +60,7 @@ export const redeemUserRewardService = async (userId, changeValue) => {
       year: currentYear,
     },
     {
-      $set: {
+      $inc: {
         redeemed: changeValue,
       },
     },

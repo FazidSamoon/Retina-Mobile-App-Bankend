@@ -269,6 +269,9 @@ async function createGoogleMeetEvent(doctorEmail, patientEmail, eventDetails) {
           },
         },
       },
+      guestsCanModify: true,
+      guestsCanInviteOthers: true,
+      guestsCanSeeOtherGuests: true,
     };
 
     const response = await calendar.events.insert({

@@ -1,1 +1,1 @@
-web: node dist/app.js
+web: nodemon --exec babel-node src/app.js

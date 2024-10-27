@@ -20,9 +20,10 @@ export const sendFirebasePushNotifications = async (title, body, fcmToken) => {
     .messaging()
     .send(message)
     .then((response) => {
-      res.status(200).send("Notification sent successfully: " + response);
+      console.log("Notification sent successfully: " + response);
     })
     .catch((error) => {
-      res.status(500).send("Error sending notification: " + error);
+      console.log("Error sending notification: " + error)
+
     });
 };

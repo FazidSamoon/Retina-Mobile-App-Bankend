@@ -18,7 +18,7 @@ const oAuth2Client = new google.auth.OAuth2(
 
 oAuth2Client.setCredentials({
   refresh_token:
-    "1//0gEIhpNfNiDXbCgYIARAAGBASNwF-L9IrlPjppZCjfVy_VQwvcBTLxcMMBWIsvdUKUcULRIyzrAIYQT_9SJvHSnI4L1mhjzufS_o",
+    "1//0gswXAozZEIPsCgYIARAAGBASNwF-L9Ir2txZTYLrFQEZp_cym_03prYEtv4IElWqJW9SsO4flDzNKCyabKwQxkQ27yZ_x3GLCAM",
 });
 
 export const getAllChannelingsByDoctor = async (req, res) => {
@@ -175,6 +175,8 @@ export const addChannelingSlot = async (req, res) => {
     });
 
     await notification.save();
+
+    console.log("")
     return makeResponse({
       res,
       status: 200,

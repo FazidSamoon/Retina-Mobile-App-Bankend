@@ -78,7 +78,7 @@ router.get("/calendar/auth", (req, res) => {
 router.get("/oauth2callback", async (req, res) => {
   console.log("fagafa");
   const code =
-    "4/0AVG7fiQ4qufNduxvZ369-EsYPbmNNDEQd1TVodWwx4LiZ9yvakaCg9bI8G2MbzHmzTp4Bg";
+    "4/0AVG7fiR8zxQF8tVtQVDY7AL19PqpW3Tz8fPgnjv0lr_5-vw4Lz_joP6cW7b6csuA80WjiQ";
 
   try {
     const { tokens } = await oAuth2Client.getToken(code);
